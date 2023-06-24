@@ -19,7 +19,7 @@ Assumption
 5. Data schema concerns - this is demo schema with limited consistency checks, data storage arbitrary assumptions,
    inappropriate types for data (i.e. Address.state) etc...
 
-Usage
+Usage (local python)
 ------
 To run the service in dev environment follow the following steps:
 
@@ -42,10 +42,24 @@ To run the service in dev environment follow the following steps:
    ```shell
    python manage.py runserver
    ```
-5. Open browser to http://127.0.0.1:8000/graphql/
+5. Open browser to http://localhost:8000/graphql/
    The actual host address may be different check output of `runserver` command.
    It provides simple Web UI to exercise the GraphQL queries:
-![media/graphiql.png](https://github.com/maciejmatuszak/graphene_sample/blob/main/media/graphiql.png)
+   ![media/graphiql.png](https://github.com/maciejmatuszak/graphene_sample/blob/main/media/graphiql.png)
+
+Usage (Docker)
+--------------
+
+```shell
+docker build --tag graphene_sample:latest . 
+docker run -it --rm \
+  --name graphene_sample \
+  --publish 8000:8000 \
+  graphene_sample:latest
+```
+
+open browser: http://localhost:8000/graphql/
+
 
 Development steps (for reference)
 -------------------------------
@@ -72,7 +86,7 @@ Development steps (for reference)
     * db models: `people/models.py`
     * Grqphene models, Queries, Mutations, resolvers etc. 'people/schema.py'
 
-5. When db models a updated - update migration scripts
+5. When db models are updated - update migration scripts
 
    ```shell
    python manage.py makemigrations

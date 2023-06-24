@@ -9,84 +9,55 @@ class PersonType(DjangoObjectType):
     # reusing db model
     class Meta:
         model = Person
+        fields = ('id', 'name', 'email', 'address')
 
 
 class AddressType(DjangoObjectType):
     # reusing db model
     class Meta:
         model = Address
-
-
-class CreatePerson(graphene.Mutation):
-    id = graphene.BigInt()
-    name = graphene.String()
-    email = graphene.String()
-
-    # mutation arguments
-    class Arguments:
-        name = graphene.String()
-        email = graphene.String()
-
-    def mutate(self, info: graphql.GraphQLResolveInfo, name: str, email: str):
-        person = Person(
-            name=name,
-            email=email
-        )
-        person.save()
-
-        return CreatePerson(
-            id=person.id,
-            name=person.name,
-            email=person.email
-        )
+        fields = ('id', 'number', 'street', 'city', 'state', 'person')
 
 
 StateEnum = graphene.Enum.from_enum(Address.StateEnum)
 
 
-class CreateAddress(graphene.Mutation):
-    id = graphene.BigInt()
-    number = graphene.Int()
-    street = graphene.String()
-    city = graphene.String()
+class AddressInput(graphene.InputObjectType):
+    number = graphene.Int(required=True)
+    street = graphene.String(required=True)
+    city = graphene.String(required=True)
     state = StateEnum(required=True)
+
+
+class PersonInput(graphene.InputObjectType):
+    name = graphene.String(required=True)
+    email = graphene.String()
+    address = graphene.Field(AddressInput)
+
+
+class CreatePerson(graphene.Mutation):
+    person = graphene.Field(PersonType)
 
     # mutation arguments
     class Arguments:
-        number = graphene.Int()
-        street = graphene.String()
-        city = graphene.String()
-        state = StateEnum(required=True)
+        person_data = PersonInput(required=True)
 
-    def mutate(self, info: graphql.GraphQLResolveInfo, number: int, street: str, city: str, state: Address.StateEnum):
-        address = Address(
-            number=number,
-            street=street,
-            city=city,
-            state=state
-        )
-        address.save()
-
-        return CreateAddress(
-            id=address.id,
-            number=address.number,
-            street=address.street,
-            city=address.city,
-            state=address.state
-        )
+    def mutate(self, info: graphql.GraphQLResolveInfo, person_data: PersonInput):
+        person_data_dict = dict(person_data)
+        address = person_data_dict.pop(Person.address.field.name)
+        if address:
+            address = Address.objects.create(**address)
+            person_data_dict[Person.address.field.name] = address
+        person = Person.objects.create(**person_data_dict)
+        return CreatePerson(person=person)
 
 
 class PersonMutation(graphene.ObjectType):
     create_person = CreatePerson.Field()
-    create_address = CreateAddress.Field()
 
 
 class PersonQuery(graphene.ObjectType):
     people = graphene.List(PersonType)
-    addresses = graphene.List(AddressType)
 
     def resolve_people(self, info: graphql.GraphQLResolveInfo, **kwargs):
         return Person.objects.all()
-
-    def resolve_addresses(self, info: graphql.GraphQLResolveInfo, **kwargs):
-        return Address.objects.all()

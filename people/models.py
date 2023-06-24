@@ -3,10 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
-class Person(models.Model):
-    name = models.TextField()
-    email = models.EmailField()
-
 
 class Address(models.Model):
     class StateEnum(models.TextChoices):
@@ -23,5 +19,9 @@ class Address(models.Model):
     street = models.TextField()
     city = models.TextField()
     state = models.CharField(max_length=3, choices=StateEnum.choices, default=StateEnum.TAS)
-    person = models.ForeignKey('people.Person', related_name='address', on_delete=models.CASCADE)
 
+
+class Person(models.Model):
+    name = models.TextField()
+    email = models.EmailField()
+    address = models.ForeignKey(Address, blank=True, null=True, related_name='person', on_delete=models.CASCADE)

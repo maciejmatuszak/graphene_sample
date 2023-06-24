@@ -1,0 +1,40 @@
+[
+  {
+    "model": "people.address",
+    "pk": 1,
+    "fields": {
+      "number": "60",
+      "street": "Greene St.",
+      "city": "Riverside",
+      "state": "IA"
+    }
+  },
+  {
+    "model": "people.address",
+    "pk": 2,
+    "fields": {
+      "number": "11",
+      "street": "Greene St.",
+      "city": "Riverside",
+      "state": "IA"
+    }
+  },
+  {
+    "model": "people.person",
+    "pk": 1,
+    "fields": {
+      "name": "James T. Kirk",
+      "email": "james.t.k@ncc-1701.sf",
+      "address": 1
+    }
+  },
+  {
+    "model": "people.person",
+    "pk": 2,
+    "fields": {
+      "name": "Maciej Matuszak",
+      "email": "maciej@server.io",
+      "address": 2
+    }
+  }
+]

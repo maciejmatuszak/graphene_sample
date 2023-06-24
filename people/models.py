@@ -15,13 +15,17 @@ class Address(models.Model):
         VIC = "VIC", _("Victoria")
         WA = "WA", _("Western Australia")
 
-    number = models.IntegerField()
-    street = models.TextField()
-    city = models.TextField()
-    state = models.CharField(max_length=3, choices=StateEnum.choices, default=StateEnum.TAS)
+        # we must have Iowa... for James :)
+        IA = "IA", _("Iowa")
+
+    # allow string as number i.e. "221/3"
+    number = models.CharField(max_length=64, null=False, blank=False)
+    street = models.CharField(max_length=128, null=False, blank=False)
+    city = models.CharField(max_length=128, null=False, blank=False)
+    state = models.CharField(max_length=3, choices=StateEnum.choices, default=StateEnum.TAS, null=False, blank=False)
 
 
 class Person(models.Model):
-    name = models.TextField()
-    email = models.EmailField()
+    name = models.TextField(max_length=128, null=False, blank=False)
+    email = models.EmailField(max_length=128)
     address = models.ForeignKey(Address, blank=True, null=True, related_name='person', on_delete=models.CASCADE)

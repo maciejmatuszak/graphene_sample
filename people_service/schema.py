@@ -1,8 +1,14 @@
-from graphene import ObjectType, Schema
+import graphene
+
+import people.schema
 
 
-class Query(ObjectType):
+class Query(people.schema.PersonQuery, graphene.ObjectType):
     pass
 
 
-schema = Schema(query=Query)
+class Mutation(people.schema.PersonMutation, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)

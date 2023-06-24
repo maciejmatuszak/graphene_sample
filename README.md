@@ -45,7 +45,7 @@ To run the service in dev environment follow the following steps:
 5. Open browser to http://127.0.0.1:8000/graphql/
    The actual host address may be different check output of `runserver` command.
    It provides simple Web UI to exercise the GraphQL queries:
-![img.png](media/img.png)
+![media/graphiql.png](https://github.com/maciejmatuszak/graphene_sample/blob/main/media/graphiql.png)
 
 Development steps (for reference)
 -------------------------------

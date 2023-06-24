@@ -13,7 +13,10 @@ To run the service in dev environment follow the following steps:
 ```shell
 python -m pip install -r ./requirements.txt 
 ```
-3. 
+3. Initialise the database
+```shell
+python manage.py migrate
+```
 
 
 Development steps (for reference)
@@ -28,3 +31,9 @@ django-admin startproject people_service
 python manage.py migrate
 ```
 
+3. Run dev server
+```shell
+python manage.py runserver
+```
+
+4. Graphine integration

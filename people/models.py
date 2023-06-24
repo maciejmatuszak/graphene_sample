@@ -23,3 +23,5 @@ class Address(models.Model):
     street = models.TextField()
     city = models.TextField()
     state = models.CharField(max_length=3, choices=StateEnum.choices, default=StateEnum.TAS)
+    person = models.ForeignKey('people.Person', related_name='address', on_delete=models.CASCADE)
+

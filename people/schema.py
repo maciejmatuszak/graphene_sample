@@ -43,12 +43,23 @@ class CreatePerson(graphene.Mutation):
         person_data = PersonInput(required=True)
 
     def mutate(self, info: graphql.GraphQLResolveInfo, person_data: PersonInput):
+        # Seems Person.objects.create is not capable of taking nested XxxxInput object
+        # we have to extract address and create it separately
+        # alternatively Person and Address object could be created separately.
+
         person_data_dict = dict(person_data)
+        # remove address to separate object
         address = person_data_dict.pop(Person.address.field.name)
+
+        # if address exists create db object and put it bask to dictionary
         if address:
             address = Address.objects.create(**address)
             person_data_dict[Person.address.field.name] = address
+
+        # create person db object
         person = Person.objects.create(**person_data_dict)
+
+        # return created object using graphene model
         return CreatePerson(person=person)
 
 

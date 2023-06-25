@@ -18,6 +18,7 @@ Assumption
    requirements.
 5. Data schema concerns - this is demo schema with limited consistency checks, data storage arbitrary assumptions,
    inappropriate types for data (i.e. Address.state) etc...
+6. Extra to requirements is `createPerson` mutation, it would be too easy without it :)
 
 Usage (local python)
 ------
